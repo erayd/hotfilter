@@ -1,12 +1,12 @@
 {
-  "name": "hotfilter",
-  "version": "1.0.1",
-  "main": "hotfilter.js",
-  "repository": "https://github.com/erayd/hotfilter",
-  "author": "Steve Gilberd",
-  "license": "ISC",
-  "private": false,
-  "dependencies": {
-    "bitfield": "^3.0.0"
-  }
+    "name": "hotfilter",
+    "version": "1.0.2",
+    "main": "hotfilter.js",
+    "repository": "https://github.com/erayd/hotfilter",
+    "author": "Steve Gilberd",
+    "license": "ISC",
+    "private": false,
+    "dependencies": {
+        "bitfield": "^3.0.0"
+    }
 }

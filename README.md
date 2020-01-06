@@ -2,7 +2,7 @@ HotFilter
 =========
 
 HotFilter is a library for noticing recurring data. Given a value, it will
-return whether it has (probably) seen that value more than n times recently.
+return the number of times it has (probably) seen that value recently.
 
 ```javascript
 const HotFilter = require("hotfilter");
@@ -12,7 +12,7 @@ let depth = 3;
 let filter = new HotFilter(width, depth);
 
 for (let item of items) {
-    if (filter.touch(item)) {
+    if (filter.touch(item) > 3) {
         // item has probably been seen more than 3 times recently
     }
 }
@@ -44,12 +44,9 @@ stage etc.) and a new stage is added at the end.
 
 ### .touch(key)
 
-Returns `true` if `key` has been seen more than `depth` times recently, where
-'recently' means within the demotion lifetime of the filter stages, or false
-otherwise.
+Marks the key as seen, and returns the number of times this key has recently
+been seen, where 'recently' means within the demotion lifetime of the filter
+stages.
 
-HotFilter is available [via npm](https://www.npmjs.com/package/hotfilter):
-```bash
-npm install hotfilter
-```
-
+Note that the greatest number which this method can return is one more than the
+configured depth.

@@ -76,8 +76,8 @@ module.exports = class HotFilter {
                 }
             }
 
-            // whether this item has been touched frequently
-            return i === this.depth;
+            // current number of times this item has been touched
+            return ++i;
         }
     }
 };
