@@ -42,10 +42,11 @@ Whenever the probability of collision in the first stage rises above
 `demoteAt`, the first stage is discarded (the second stage becomes the first
 stage etc.) and a new stage is added at the end.
 
-### .touch(key) : boolean
+### .touch(key)
 
 Returns `true` if `key` has been seen more than `depth` times recently, where
-'recently' means within the demotion lifetime of the filter stages.
+'recently' means within the demotion lifetime of the filter stages, or false
+otherwise.
 
 HotFilter is available [via npm](https://www.npmjs.com/package/hotfilter):
 ```bash
