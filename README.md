@@ -34,9 +34,9 @@ HotFilter is similar to a bloom filter, but with a temporal component. It has
 `depth` bitfields of 2^`width` bits, each of which has a unique hash function.
 
 Every time `touch()` is run, it marks that key in the deepest stage which has
-not yet seen it. It's slightly similar to a bloom filter, except that every
-hash function has its own bitfield, rather than the single shared field used by
-bloom filters - this allows for the gradual insertion of values over time.
+not yet seen it. Rather than the single shared field used by bloom filters,
+this allows for the gradual insertion of values over time while still retaining
+the high efficiency of bloom filters.
 
 Whenever the probability of collision in the first stage rises above
 `demoteAt`, the first stage is discarded (the second stage becomes the first
