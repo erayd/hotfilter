@@ -33,12 +33,8 @@ module.exports = class HotFilter {
 
         // create a new bitfield & seed for each level
         var filter = [];
-        var seed = [];
         while (depth--) {
             filter.push(new Bitfield(1 << width));
-            let hash = crypto.createHash("sha1");
-            hash.update(Buffer.from([depth]));
-            seed.push(hash.digest().readUInt32LE() & ((1 << width) - 1));
         }
 
         // use node's native crypto to produce hash values quickly
@@ -66,9 +62,9 @@ module.exports = class HotFilter {
             let h = hash(clamp(key));
             let i;
             for (i = 0; i < this.depth; i++) {
-                if (!filter[i].get(h ^ seed[i])) {
+                if (!filter[i].get(h)) {
                     if (touch) {
-                        filter[i].set(h ^ seed[i]);
+                        filter[i].set(h);
                     } else if (i === 0) {
                         return 0;
                     }
@@ -88,7 +84,6 @@ module.exports = class HotFilter {
                 ++lifetime;
                 if (1 - Math.exp(-1 / ((1 << width) / lifetime)) >= demoteAt) {
                     lifetime = 0;
-                    seed.push(seed.shift());
                     filter.shift();
                     filter.push(new Bitfield(1 << width));
                 }

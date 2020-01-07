@@ -31,7 +31,8 @@ Creates a new filter with `depth` stages of `width` bits.
 | demoteAt | 0.01    | The probability at which stages are demoted |
 
 HotFilter is similar to a bloom filter, but with a temporal component. It has
-`depth` bitfields of 2^`width` bits, each of which has a unique hash function.
+`depth` bitfields of 2^`width` bits, which replace the traditional multiple hash
+functions of a bloom filter.
 
 Every time `touch()` is run, it marks that key in the deepest stage which has
 not yet seen it. Rather than the single shared field used by bloom filters,

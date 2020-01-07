@@ -1,6 +1,6 @@
 {
     "name": "hotfilter",
-    "version": "1.1.1",
+    "version": "1.1.2",
     "main": "hotfilter.js",
     "repository": "https://github.com/erayd/hotfilter",
     "author": "Steve Gilberd",
