@@ -44,9 +44,12 @@ stage etc.) and a new stage is added at the end.
 
 ### .touch(key)
 
-Marks the key as seen, and returns the number of times this key has recently
-been seen, where 'recently' means within the demotion lifetime of the filter
-stages.
+Marks `key` as seen, and returns the number of times this key has recently been
+seen, where 'recently' means within the demotion lifetime of the filter stages.
 
 Note that the greatest number which this method can return is one more than the
 configured depth.
+
+### .get(key)
+
+Get the current depth for `key`.
