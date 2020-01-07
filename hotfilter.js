@@ -25,7 +25,8 @@ module.exports = class HotFilter {
             width: { value: width, writable: false, enumerable: true },
             depth: { value: depth, writable: false, enumerable: true },
             demoteAt: { value: demoteAt, writable: false, enumerable: true },
-            touch: { value: touch, writable: false, enumerable: false }
+            touch: { value: touch, writable: false, enumerable: false },
+            get: { value: get, writable: false, enumerable: false }
         });
 
         var lifetime = 0;
@@ -47,7 +48,8 @@ module.exports = class HotFilter {
             return hash.digest().readUInt32LE() & ((1 << width) - 1);
         }
 
-        function touch(key) {
+        // clamp key values to something hashable
+        function clamp(key) {
             // clamp key value (converted types are prefixed to avoid collision; e.g.
             // n and "n" look the same when n is converted to a string for hashing,
             // but they should be considered unique, as they differ in type)
@@ -56,17 +58,33 @@ module.exports = class HotFilter {
                 key = prefix + key.toString();
             }
 
-            let h = hash(key);
+            return key;
+        }
+
+        // check or touch a key value
+        function slot(key, touch = false) {
+            let h = hash(clamp(key));
             let i;
             for (i = 0; i < this.depth; i++) {
                 if (!filter[i].get(h ^ seed[i])) {
-                    filter[i].set(h ^ seed[i]);
+                    if (touch) {
+                        filter[i].set(h ^ seed[i]);
+                    } else if (i === 0) {
+                        return 0;
+                    }
                     break;
                 }
             }
 
+            return ++i;
+        }
+
+        // touch a key value
+        function touch(key) {
+            let i = slot.call(this, key, true);
+
             // run demotion
-            if (!i) {
+            if (i === 1) {
                 ++lifetime;
                 if (1 - Math.exp(-1 / ((1 << width) / lifetime)) >= demoteAt) {
                     lifetime = 0;
@@ -77,7 +95,12 @@ module.exports = class HotFilter {
             }
 
             // current number of times this item has been touched
-            return ++i;
+            return i;
+        }
+
+        // get a key's current depth
+        function get(key) {
+            return slot.call(this, key, false);
         }
     }
 };
